@@ -1,1 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Consulting — Accounting × Tech</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c0e;
+    --surface: #111417;
+    --border: #1e2328;
+    --green: #00e676;
+    --green-dim: #00b85e;
+    --amber: #ffab00;
+    --white: #f0f2f5;
+    --muted: #7a8494;
+    --card-bg: #13171c;
+  }
 
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+  }
+
+  /* ── GRID LINES ── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,230,118,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,230,118,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 48px;
+    background: rgba(10,12,14,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--green);
+    letter-spacing: 0.05em;
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--muted); }
+
+  nav a {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  nav a:hover { color: var(--green); }
+
+  .nav-links { display: flex; gap: 32px; align-items: center; }
+
+  .nav-cta {
+    color: var(--bg) !important;
+    background: var(--green);
+    padding: 8px 20px;
+    font-weight: 700;
+    transition: background 0.2s !important;
+  }
+
+  .nav-cta:hover { background: var(--green-dim) !important; color: var(--bg) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 48px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .hero-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-label::before {
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 1px;
+    background: var(--green);
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 10vw, 140px);
+    line-height: 0.92;
+    letter-spacing: 0.02em;
+    color: var(--white);
+    margin-bottom: 8px;
+    animation: fadeUp 0.6s ease 0.1s both;
+  }
+
+  .hero h1 .accent {
+    color: var(--green);
+    display: block;
+  }
+
+  .hero-sub {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 32px;
+    max-width: 520px;
+    line-height: 1.8;
+    animation: fadeUp 0.6s ease 0.2s both;
+  }
+
+  .hero-sub strong { color: var(--white); }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 48px;
+    animation: fadeUp 0.6s ease 0.3s both;
+  }
+
+  .btn-primary {
+    background: var(--green);
+    color: var(--bg);
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 16px 32px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s, transform 0.15s;
+  }
+
+  .btn-primary:hover { background: var(--green-dim); transform: translateY(-2px); }
+
+  .btn-ghost {
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 16px 32px;
+    text-decoration: none;
+    display: inline-block;
+    transition: border-color 0.2s, color 0.2s;
+  }
+
+  .btn-ghost:hover { border-color: var(--green); color: var(--green); }
+
+  /* terminal blink */
+  .cursor {
+    display: inline-block;
+    width: 3px;
+    height: 1em;
+    background: var(--green);
+    vertical-align: middle;
+    margin-left: 4px;
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    position: relative;
+    z-index: 1;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 0 48px;
+  }
+
+  .stats-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .stat {
+    padding: 40px 0;
+    border-right: 1px solid var(--border);
+    padding-right: 40px;
+    padding-left: 40px;
+  }
+
+  .stat:first-child { padding-left: 0; }
+  .stat:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    color: var(--green);
+    line-height: 1;
+    display: block;
+  }
+
+  .stat-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-top: 6px;
+    display: block;
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 100px 48px;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--green);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 80px;
+  }
+
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(40px, 5vw, 72px);
+    line-height: 1;
+    margin-bottom: 48px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── SERVICES GRID ── */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+
+  .service-card {
+    background: var(--card-bg);
+    padding: 40px;
+    transition: background 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--green);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-card:hover { background: #161b21; }
+
+  .service-icon {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+    margin-bottom: 20px;
+    letter-spacing: 0.1em;
+  }
+
+  .service-card h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+
+  .service-card p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* ── SKILLS SECTION ── */
+  .skills-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  .skills-text p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+
+  .skills-text p strong { color: var(--white); }
+
+  .lang-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  .lang-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    text-align: center;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+    cursor: default;
+  }
+
+  .lang-tag:hover {
+    border-color: var(--green);
+    color: var(--green);
+    background: rgba(0,230,118,0.05);
+  }
+
+  /* ── PAST WORK ── */
+  .work-list { display: flex; flex-direction: column; gap: 2px; }
+
+  .work-item {
+    display: grid;
+    grid-template-columns: 1fr 160px 140px;
+    align-items: center;
+    gap: 24px;
+    padding: 28px 32px;
+    background: var(--card-bg);
+    border-left: 2px solid transparent;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .work-item:hover {
+    border-left-color: var(--green);
+    background: #161b21;
+  }
+
+  .work-title {
+    font-weight: 500;
+    font-size: 15px;
+  }
+
+  .work-title span {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .work-saved {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--green);
+  }
+
+  .work-saved small {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .work-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 5px 12px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-align: center;
+    justify-self: end;
+  }
+
+  /* ── PROCESS ── */
+  .process-steps {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    position: relative;
+  }
+
+  .process-steps::before {
+    content: '';
+    position: absolute;
+    top: 28px;
+    left: 28px; right: 28px;
+    height: 1px;
+    background: var(--border);
+    z-index: 0;
+  }
+
+  .process-step {
+    position: relative;
+    z-index: 1;
+    padding-top: 0;
+    text-align: center;
+  }
+
+  .step-num {
+    width: 56px;
+    height: 56px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--green);
+    margin: 0 auto 24px;
+    position: relative;
+    z-index: 1;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .process-step:hover .step-num {
+    background: var(--green);
+    color: var(--bg);
+    border-color: var(--green);
+  }
+
+  .process-step h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+
+  .process-step p {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    padding: 0 16px;
+  }
+
+  /* ── CONTACT ── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .contact-copy h2 { margin-bottom: 20px; }
+
+  .contact-copy p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 32px;
+  }
+
+  .contact-copy p strong { color: var(--white); }
+
+  .contact-detail {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .contact-detail:first-of-type { border-top: 1px solid var(--border); }
+
+  .contact-detail-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    min-width: 80px;
+  }
+
+  .contact-detail-val {
+    font-size: 14px;
+    color: var(--white);
+  }
+
+  /* ── FORM ── */
+  .contact-form { display: flex; flex-direction: column; gap: 16px; }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .form-group { display: flex; flex-direction: column; gap: 8px; }
+
+  .form-group label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 14px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    appearance: none;
+    resize: vertical;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--green);
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: var(--muted); }
+
+  .form-group select option { background: var(--surface); }
+
+  .form-submit {
+    background: var(--green);
+    color: var(--bg);
+    border: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 18px 32px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    margin-top: 8px;
+    align-self: flex-start;
+  }
+
+  .form-submit:hover { background: var(--green-dim); transform: translateY(-2px); }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 32px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+  }
+
+  footer p {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--green); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    position: relative;
+    z-index: 1;
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 48px;
+  }
+
+  /* ── AMBER HIGHLIGHT ── */
+  .amber { color: var(--amber); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 16px 24px; }
+    .hero { padding: 100px 24px 60px; }
+    .stats-bar { padding: 0 24px; }
+    .stats-inner { grid-template-columns: repeat(2, 1fr); }
+    section { padding: 72px 24px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .skills-layout { grid-template-columns: 1fr; }
+    .lang-grid { grid-template-columns: repeat(4, 1fr); }
+    .work-item { grid-template-columns: 1fr; gap: 8px; }
+    .work-tag { justify-self: start; }
+    .process-steps { grid-template-columns: 1fr; gap: 32px; }
+    .process-steps::before { display: none; }
+    .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+    .form-row { grid-template-columns: 1fr; }
+    .divider { margin: 0 24px; }
+    .footer-links { display: none; }
+    .nav-links a:not(.nav-cta) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">ACC<span>×</span>TECH</a>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#work">Work</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact" class="nav-cta">Hire Me</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">Available for consulting engagements</div>
+  <h1>
+    Numbers.<br>
+    Code.<br>
+    <span class="accent">Results.</span>
+  </h1>
+  <p class="hero-sub">
+    The intersection of <strong>accounting precision</strong> and <strong>engineering mindset</strong> — built to find the hours you're losing, then automate them away.<span class="cursor"></span>
+  </p>
+  <div class="hero-actions">
+    <a href="#contact" class="btn-primary">Start a Project</a>
+    <a href="#work" class="btn-ghost">See Past Work</a>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat reveal">
+      <span class="stat-num">15+</span>
+      <span class="stat-label">Years with computers</span>
+    </div>
+    <div class="stat reveal">
+      <span class="stat-num">1000s</span>
+      <span class="stat-label">Hours saved for clients</span>
+    </div>
+    <div class="stat reveal">
+      <span class="stat-num">10+</span>
+      <span class="stat-label">Languages & frameworks</span>
+    </div>
+    <div class="stat reveal">
+      <span class="stat-num">100%</span>
+      <span class="stat-label">Accounting + tech fluency</span>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-label">What I Do</div>
+  <h2>Full-Stack Consulting<br><span class="amber">for the Modern Business</span></h2>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-icon">[ 01 ] CONSULTING</div>
+      <h3>Strategy & Discovery</h3>
+      <p>Deep-dive into your current workflows. I map where time bleeds out and where technology can take over — with the accounting context most developers don't have.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">[ 02 ] PLANNING</div>
+      <h3>Automation Blueprints</h3>
+      <p>From spreadsheet chaos to clean pipelines. I design automation architectures that make sense to your finance team and your tech team — because I speak both languages.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">[ 03 ] EXECUTION</div>
+      <h3>I Build It Too</h3>
+      <p>No handoff required. I consult and I code. Scripts, dashboards, integrations, custom tools — whatever your books and your business demand, I build it myself.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">[ 04 ] PROJECTS</div>
+      <h3>End-to-End Buildouts</h3>
+      <p>Complex, multi-phase projects with clear deliverables. Accounting software integrations, reporting systems, reconciliation tools, and financial data pipelines.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">[ 05 ] ACCOUNTING</div>
+      <h3>Tech-Driven Accounting</h3>
+      <p>Month-end close automation, real-estate transaction accounting, reconciliation workflows, and reporting infrastructure — all the accounting work, done with a coder's efficiency.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">[ 06 ] TRAINING</div>
+      <h3>Team Enablement</h3>
+      <p>I don't just build and leave. I train your team, document everything, and make sure you own what I build. The goal is fewer hours spent, forever.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PAST WORK -->
+<section id="work">
+  <div class="section-label">Track Record</div>
+  <h2>Hours Saved.<br><span class="amber">Not Just Promised.</span></h2>
+  <div class="work-list">
+    <div class="work-item reveal">
+      <div class="work-title">
+        Portfolio-Wide Accrual Automation
+        <span>Python scripts generating payroll JEs, accruals, and balance sheet schedules from raw exports</span>
+      </div>
+      <div class="work-saved">
+        Every close
+        <small>fully scripted</small>
+      </div>
+      <div class="work-tag">Python · Excel</div>
+    </div>
+    <div class="work-item reveal">
+      <div class="work-title">
+        Bank Reconciliation Bot
+        <span>Vendor integration syncing bank transactions from Trovata into Entrata with auto-matching rules</span>
+      </div>
+      <div class="work-saved">
+        30+
+        <small>properties reconciled</small>
+      </div>
+      <div class="work-tag">Trovata · Entrata</div>
+    </div>
+    <div class="work-item reveal">
+      <div class="work-title">
+        Executive Reporting Pipeline
+        <span>Aggregated BS and income data from Entrata, RealPage, Conservice, SimpleBills, and Avid into one report</span>
+      </div>
+      <div class="work-saved">
+        5 → 1
+        <small>platforms consolidated</small>
+      </div>
+      <div class="work-tag">Python · APIs</div>
+    </div>
+    <div class="work-item reveal">
+      <div class="work-title">
+        Monthly Operations Review Overhaul
+        <span>Replaced scattered threads with one aggregated file and an Excel script automating JE uploads</span>
+      </div>
+      <div class="work-saved">
+        1 file
+        <small>replaced the chaos</small>
+      </div>
+      <div class="work-tag">Office Scripts · Excel</div>
+    </div>
+    <div class="work-item reveal">
+      <div class="work-title">
+        FloQast Rollout
+        <span>Implemented month-end close platform across 30+ properties — bank, TB, and BS recs in one workflow</span>
+      </div>
+      <div class="work-saved">
+        30+
+        <small>properties onboarded</small>
+      </div>
+      <div class="work-tag">FloQast · SaaS</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">The Toolkit</div>
+  <h2>One Brain.<br><span class="amber">Two Disciplines.</span></h2>
+  <div class="skills-layout">
+    <div class="skills-text reveal">
+      <p>
+        Computers have been my obsession since childhood — not as a career pivot, but as a <strong>lifelong native language</strong>. I grew up pulling apart machines, learning to code before it was a buzzword, and never stopped.
+      </p>
+      <p>
+        Then came accounting — and I saw immediately what everyone else was missing: <strong>finance teams drowning in manual work</strong> that code could handle in seconds. That gap is where I live.
+      </p>
+      <p>
+        I don't just recommend tools. I understand <strong>debits and credits, cost centers and consolidations</strong> — and then I write the script that handles them. No translation layer. No "I'll hand this off to a developer."
+      </p>
+      <p>
+        <strong>Let me work for you.</strong> Whether it's a single automation or a full department buildout, I bring both sides of the equation.
+      </p>
+    </div>
+    <div class="reveal">
+      <div class="section-label" style="margin-bottom: 20px;">Languages & Tools</div>
+      <div class="lang-grid">
+        <div class="lang-tag">Python</div>
+        <div class="lang-tag">VBA</div>
+        <div class="lang-tag">SQL</div>
+        <div class="lang-tag">Excel</div>
+        <div class="lang-tag">Office Scripts</div>
+        <div class="lang-tag">REST APIs</div>
+        <div class="lang-tag">Entrata</div>
+        <div class="lang-tag">RealPage</div>
+        <div class="lang-tag">Yardi</div>
+        <div class="lang-tag">FloQast</div>
+        <div class="lang-tag">Oracle BI</div>
+        <div class="lang-tag">QuickBooks</div>
+      </div>
+      <div class="section-label" style="margin-top: 32px; margin-bottom: 20px;">Accounting Domains</div>
+      <div class="lang-grid">
+        <div class="lang-tag">Month-End Close</div>
+        <div class="lang-tag">GL / Ledger</div>
+        <div class="lang-tag">Real Estate</div>
+        <div class="lang-tag">Acquisitions</div>
+        <div class="lang-tag">Dispositions</div>
+        <div class="lang-tag">Reconciliation</div>
+        <div class="lang-tag">Accruals</div>
+        <div class="lang-tag">Journal Entries</div>
+        <div class="lang-tag">AP / AR</div>
+        <div class="lang-tag">Payroll JEs</div>
+        <div class="lang-tag">Reporting</div>
+        <div class="lang-tag">Variance Analysis</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PROCESS -->
+<section>
+  <div class="section-label">How We Work</div>
+  <h2>Simple Process.<br><span class="amber">Real Results.</span></h2>
+  <div class="process-steps">
+    <div class="process-step reveal">
+      <div class="step-num">01</div>
+      <h4>Discovery</h4>
+      <p>We map your current workflows and find where time is being wasted.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-num">02</div>
+      <h4>Planning</h4>
+      <p>I design a concrete automation plan with clear scope and deliverables.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-num">03</div>
+      <h4>Build</h4>
+      <p>I write the code, configure the tools, and test everything thoroughly.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-num">04</div>
+      <h4>Deploy</h4>
+      <p>We go live together. I'm there to handle everything that comes up.</p>
+    </div>
+    <div class="process-step reveal">
+      <div class="step-num">05</div>
+      <h4>Handoff</h4>
+      <p>Full docs, trained team, and you own everything. No lock-in.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-grid">
+    <div class="contact-copy reveal">
+      <div class="section-label">Get in Touch</div>
+      <h2>Let's Cut Your<br><span class="amber">Manual Work.</span></h2>
+      <p>
+        Tell me about your workflow, your pain points, or your project idea. <strong>There's no minimum scope</strong> — I work on everything from a single automation to a full department overhaul.
+      </p>
+      <p>
+        I respond within 24 hours and offer a <strong>free 30-minute discovery call</strong> to see if we're a fit before any commitment.
+      </p>
+      <div class="contact-detail">
+        <span class="contact-detail-label">Response</span>
+        <span class="contact-detail-val">Within 24 hours</span>
+      </div>
+      <div class="contact-detail">
+        <span class="contact-detail-label">Discovery</span>
+        <span class="contact-detail-val">Free 30-min call</span>
+      </div>
+      <div class="contact-detail">
+        <span class="contact-detail-label">Availability</span>
+        <span class="contact-detail-val">Open to new projects</span>
+      </div>
+      <div class="contact-detail">
+        <span class="contact-detail-label">Work Type</span>
+        <span class="contact-detail-val">Remote · Project · Retainer</span>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" placeholder="Jane Smith">
+          </div>
+          <div class="form-group">
+            <label>Company</label>
+            <input type="text" placeholder="Acme Corp">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="jane@company.com">
+        </div>
+        <div class="form-group">
+          <label>Project Type</label>
+          <select>
+            <option value="" disabled selected>Select a category</option>
+            <option>Automation / Scripting</option>
+            <option>Accounting Workflow</option>
+            <option>Reporting / Dashboard</option>
+            <option>Full System Buildout</option>
+            <option>Consulting / Strategy</option>
+            <option>Training / Documentation</option>
+            <option>Something Else</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tell Me About It</label>
+          <textarea rows="5" placeholder="Describe your current pain point or project idea. The more detail, the better..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Estimated Budget</label>
+          <select>
+            <option value="" disabled selected>Select a range</option>
+            <option>Under $1,000</option>
+            <option>$1,000 – $5,000</option>
+            <option>$5,000 – $15,000</option>
+            <option>$15,000+</option>
+            <option>Let's talk</option>
+          </select>
+        </div>
+        <button class="form-submit" onclick="handleSubmit(this)">Send Inquiry →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 — Adam Lantz · Accounting × Tech Consulting. All rights reserved.</p>
+  <div class="footer-links">
+    <a href="#services">Services</a>
+    <a href="#work">Work</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Form submit
+  function handleSubmit(btn) {
+    btn.textContent = 'Sent! I\'ll be in touch soon.';
+    btn.style.background = '#00b85e';
+    btn.disabled = true;
+  }
+</script>
+</body>
+</html>
