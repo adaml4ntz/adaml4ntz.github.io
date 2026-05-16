@@ -10,6 +10,13 @@
     #__bundler_thumbnail { position: fixed; inset: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #faf9f5; z-index: 9999; }
     #__bundler_thumbnail svg { width: 100%; height: 100%; object-fit: contain; }
     #__bundler_placeholder { color: #999; font-size: 14px; }
+    /* Site banner */
+    .site-banner { position: fixed; top: 0; left: 0; right: 0; background: #fff8e6; color: #111; display: flex; align-items: center; justify-content: center; padding: 10px 16px; z-index: 100000; box-shadow: 0 4px 18px rgba(2,6,23,0.08); }
+    .site-banner__inner { max-width: 1200px; width: 100%; display: flex; align-items: center; gap: 12px; padding: 6px 12px; }
+    .site-banner__link { color: inherit; text-decoration: none; font-weight: 700; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 13px; }
+    .site-banner__close { margin-left: 12px; background: transparent; border: none; font-size: 16px; cursor: pointer; color: inherit; }
+    /* push content down so banner doesn't overlap fixed elements */
+    body { padding-top: 46px; }
   </style>
   <noscript>
     <style>#__bundler_loading { display: none; }</style>
@@ -19,6 +26,12 @@
   </noscript>
 </head>
 <body>
+  <div class="site-banner" id="site-banner">
+    <div class="site-banner__inner">
+      <a class="site-banner__link" href="consulting.html">Need fractional CFO / accounting × tech help? Learn about consulting →</a>
+      <button class="site-banner__close" id="site-banner-close" aria-label="Dismiss banner">✕</button>
+    </div>
+  </div>
   <div id="__bundler_thumbnail">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400">
       <rect width="400" height="400" fill="#efe9dc"></rect>
@@ -162,6 +175,22 @@ document.addEventListener('DOMContentLoaded', async function() {
   }
 });
 
+  </script>
+
+  <script>
+    (function() {
+      try {
+        if (localStorage && localStorage.getItem('siteBannerDismissed') === '1') {
+          var b = document.getElementById('site-banner'); if (b) b.style.display = 'none';
+        }
+        document.addEventListener('click', function(e) {
+          if (e.target && e.target.id === 'site-banner-close') {
+            var banner = document.getElementById('site-banner'); if (banner) banner.style.display = 'none';
+            try { localStorage.setItem('siteBannerDismissed','1'); } catch (err) {}
+          }
+        }, { passive: true });
+      } catch (err) { /* noop */ }
+    })();
   </script>
 
   <script type="__bundler/manifest">
