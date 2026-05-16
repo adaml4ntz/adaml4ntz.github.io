@@ -216,8 +216,45 @@ document.addEventListener('DOMContentLoaded', async function() {
         } catch (e) {}
       }
 
+      function createConsultingLink(text) {
+        var link = document.createElement('a');
+        link.href = 'consulting.html';
+        link.textContent = text;
+        link.className = 'auto-consulting-link';
+        link.setAttribute('data-consulting-link', 'true');
+        return link;
+      }
+
+      function appendConsultingLink(container) {
+        if (!container || container.querySelector('a[data-consulting-link]')) return false;
+        var list = container.querySelector('ul');
+        if (list) {
+          var item = document.createElement('li');
+          item.appendChild(createConsultingLink('Consulting'));
+          list.appendChild(item);
+          return true;
+        }
+        var anchor = container.querySelector('a');
+        if (anchor && anchor.parentElement && anchor.parentElement.tagName.toLowerCase() === 'li') {
+          var item = document.createElement('li');
+          item.appendChild(createConsultingLink('Consulting'));
+          container.appendChild(item);
+          return true;
+        }
+        container.appendChild(createConsultingLink('Consulting'));
+        return true;
+      }
+
+      function ensureConsultingLinks() {
+        try {
+          appendConsultingLink(document.querySelector('nav'));
+          appendConsultingLink(document.querySelector('footer'));
+        } catch (e) {}
+      }
+
       // Try immediately and then observe for template replacement
       ensureBanner();
+      ensureConsultingLinks();
 
       // Global click handler to catch static banner close (if present before script runs)
       document.addEventListener('click', function(e) {
@@ -228,10 +265,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         }
       }, { passive: true });
 
-      var obs = new MutationObserver(function() { ensureBanner(); });
+      var obs = new MutationObserver(function() { ensureBanner(); ensureConsultingLinks(); });
       try { obs.observe(document.documentElement || document, { childList: true, subtree: true }); } catch (e) {}
       // Fallback polling for a short time
-      var tries = 0, t = setInterval(function() { tries++; ensureBanner(); if (tries > 30) clearInterval(t); }, 300);
+      var tries = 0, t = setInterval(function() { tries++; ensureBanner(); ensureConsultingLinks(); if (tries > 30) clearInterval(t); }, 300);
     })();
   </script>
 
