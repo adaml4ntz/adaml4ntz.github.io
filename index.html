@@ -15,8 +15,8 @@
     .site-banner__inner { max-width: 1200px; width: 100%; display: flex; align-items: center; gap: 12px; padding: 6px 12px; }
     .site-banner__link { color: inherit; text-decoration: none; font-weight: 700; font-family: -apple-system, BlinkMacSystemFont, sans-serif; font-size: 13px; }
     .site-banner__close { margin-left: 12px; background: transparent; border: none; font-size: 16px; cursor: pointer; color: inherit; }
-    /* push content down so nav + banner don't overlap content */
-    body { padding-top: 110px; }
+    /* push content down so nav is visible; banner will increase this when present */
+    body { padding-top: 64px; }
   </style>
   <noscript>
     <style>#__bundler_loading { display: none; }</style>
@@ -199,13 +199,18 @@ document.addEventListener('DOMContentLoaded', async function() {
         document.body.style.paddingTop = '110px';
         document.getElementById('site-banner-close').addEventListener('click', function() {
           var b = document.getElementById('site-banner'); if (b) b.style.display = 'none';
+          document.body.style.paddingTop = '64px';
           try { localStorage.setItem('siteBannerDismissed','1'); } catch (e) {}
         }, { passive: true });
       }
 
       function ensureBanner() {
         try {
-          if (localStorage && localStorage.getItem('siteBannerDismissed') === '1') return;
+          if (localStorage && localStorage.getItem('siteBannerDismissed') === '1') {
+            var existing = document.getElementById('site-banner'); if (existing) existing.style.display = 'none';
+            document.body.style.paddingTop = '64px';
+            return;
+          }
           if (!document.body) return;
           if (!document.getElementById('site-banner')) createBanner();
         } catch (e) {}
@@ -213,6 +218,15 @@ document.addEventListener('DOMContentLoaded', async function() {
 
       // Try immediately and then observe for template replacement
       ensureBanner();
+
+      // Global click handler to catch static banner close (if present before script runs)
+      document.addEventListener('click', function(e) {
+        if (e.target && e.target.id === 'site-banner-close') {
+          var banner = document.getElementById('site-banner'); if (banner) banner.style.display = 'none';
+          document.body.style.paddingTop = '64px';
+          try { localStorage.setItem('siteBannerDismissed','1'); } catch (err) {}
+        }
+      }, { passive: true });
 
       var obs = new MutationObserver(function() { ensureBanner(); });
       try { obs.observe(document.documentElement || document, { childList: true, subtree: true }); } catch (e) {}
