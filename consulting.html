@@ -20,13 +20,8 @@
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-  /* Site banner */
-  .site-banner { position: fixed; top: 0; left: 0; right: 0; background: #111417; color: #00e676; display: flex; align-items: center; justify-content: center; padding: 10px 16px; z-index: 200; box-shadow: 0 4px 18px rgba(0,0,0,0.6); }
-  .site-banner__inner { max-width: 1200px; width: 100%; display: flex; align-items: center; gap: 12px; padding: 6px 12px; }
-  .site-banner__link { color: inherit; text-decoration: none; font-weight: 700; font-family: 'Space Mono', monospace; font-size: 13px; }
-  .site-banner__close { margin-left: 12px; background: transparent; border: none; font-size: 16px; cursor: pointer; color: inherit; }
-  /* ensure nav doesn't overlap banner */
-  nav { top: 46px; }
+  /* NAV stays at top */
+  nav { top: 0; z-index: 100; }
 
   html { scroll-behavior: smooth; }
 
@@ -701,12 +696,6 @@
 </style>
 </head>
 <body>
-  <div class="site-banner" id="site-banner">
-    <div class="site-banner__inner">
-      <a class="site-banner__link" href="consulting.html">Consulting: fractional CFO, accounting × tech — learn more →</a>
-      <button class="site-banner__close" id="site-banner-close" aria-label="Dismiss banner">✕</button>
-    </div>
-  </div>
 
 <!-- NAV -->
 <nav>
@@ -1065,18 +1054,7 @@
     btn.disabled = true;
   }
 
-  // Banner dismiss handling
-  try {
-    if (localStorage && localStorage.getItem('siteBannerDismissed') === '1') {
-      var sb = document.getElementById('site-banner'); if (sb) sb.style.display = 'none';
-    }
-    document.addEventListener('click', function(e) {
-      if (e.target && e.target.id === 'site-banner-close') {
-        var banner = document.getElementById('site-banner'); if (banner) banner.style.display = 'none';
-        try { localStorage.setItem('siteBannerDismissed','1'); } catch (err) {}
-      }
-    }, { passive: true });
-  } catch (err) { /* noop */ }
+  
 </script>
 </body>
 </html>
