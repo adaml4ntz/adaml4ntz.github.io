@@ -671,6 +671,40 @@
 
   .form-group select option { background: var(--surface); }
 
+  .form-message {
+    padding: 16px;
+    margin-bottom: 24px;
+    border-radius: 2px;
+    font-size: 13px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .form-success {
+    background: rgba(0, 230, 118, 0.1);
+    color: var(--green);
+    border: 1px solid var(--green);
+  }
+
+  .form-error {
+    background: rgba(255, 107, 107, 0.1);
+    color: #ff6b6b;
+    border: 1px solid #ff6b6b;
+  }
+
+  .field-error {
+    display: block;
+    font-size: 11px;
+    color: #ff6b6b;
+    margin-top: 4px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  .form-group input[aria-invalid="true"],
+  .form-group select[aria-invalid="true"],
+  .form-group textarea[aria-invalid="true"] {
+    border-color: #ff6b6b;
+  }
+
   .form-submit {
     background: var(--green);
     color: var(--bg);
@@ -1354,6 +1388,13 @@
 </footer>
 
 <script>
+  // Formspree initialization
+  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+  formspree('initForm', { formElement: '#contact-form', formId: 'mpqnarkz' });
+</script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+
+<script>
   // Hamburger menu toggle
   const hamburger = document.getElementById('hamburger');
   const navMenu = document.getElementById('nav-menu');
@@ -1383,15 +1424,6 @@
     });
   }, { threshold: 0.1 });
   reveals.forEach(el => observer.observe(el));
-
-  // Form submit
-  function handleSubmit(btn) {
-    btn.textContent = 'Sent! I\'ll be in touch soon.';
-    btn.style.background = '#00b85e';
-    btn.disabled = true;
-  }
-
-  
 </script>
 </body>
 </html>
