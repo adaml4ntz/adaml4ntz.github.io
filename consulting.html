@@ -106,6 +106,79 @@
 
   .nav-cta:hover { background: var(--green-dim) !important; color: var(--bg) !important; }
 
+  /* ── HAMBURGER MENU ── */
+  .hamburger-btn {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    gap: 4px;
+    padding: 8px;
+    z-index: 101;
+  }
+
+  .hamburger-btn span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--green);
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+
+  .hamburger-btn.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 8px);
+  }
+
+  .hamburger-btn.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger-btn.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -8px);
+  }
+
+  .mobile-menu {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: rgba(17, 20, 23, 0.98);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    flex-direction: column;
+    gap: 1px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    z-index: 100;
+  }
+
+  .mobile-menu.active {
+    max-height: 300px;
+  }
+
+  .mobile-menu a {
+    padding: 16px 24px;
+    display: block;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .mobile-menu a:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-menu .nav-cta {
+    background: var(--green);
+    color: var(--bg);
+    text-align: center;
+    margin: 16px;
+    border: none;
+    padding: 12px 20px;
+  }
+
   /* ── HERO ── */
   .hero {
     position: relative;
@@ -676,6 +749,9 @@
   /* ── RESPONSIVE ── */
   @media (max-width: 900px) {
     nav { padding: 16px 24px; }
+    .hamburger-btn { display: flex; }
+    .nav-links { display: none; }
+    .nav-links.active { display: flex; }
     .hero { padding: 100px 24px 60px; }
     .stats-bar { padding: 0 24px; }
     .stats-inner { grid-template-columns: repeat(2, 1fr); }
@@ -691,7 +767,229 @@
     .form-row { grid-template-columns: 1fr; }
     .divider { margin: 0 24px; }
     .footer-links { display: none; }
-    .nav-links a:not(.nav-cta) { display: none; }
+  }
+
+  /* ── MOBILE OPTIMIZATION ── */
+  @media (max-width: 640px) {
+    body { font-size: 15px; }
+
+    /* NAV */
+    nav { padding: 14px 16px; }
+
+    .hamburger-btn { display: flex; }
+
+    .nav-logo { font-size: 12px; }
+
+    .nav-links { gap: 16px; }
+
+    /* HERO */
+    .hero {
+      padding: 80px 16px 40px;
+      min-height: auto;
+    }
+
+    .hero h1 {
+      font-size: clamp(42px, 9vw, 72px);
+      line-height: 1;
+    }
+
+    .hero-label {
+      font-size: 10px;
+      margin-bottom: 16px;
+    }
+
+    .hero-label::before {
+      width: 20px;
+    }
+
+    .hero-sub {
+      font-size: 13px;
+      margin-top: 20px;
+      max-width: 100%;
+    }
+
+    .hero-actions {
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .btn-primary, .btn-ghost {
+      padding: 14px 24px;
+      font-size: 11px;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* STATS BAR */
+    .stats-bar { padding: 0 16px; }
+
+    .stats-inner {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+    }
+
+    .stat {
+      padding: 24px 16px;
+      border-right: 1px solid var(--border);
+      padding-right: 16px;
+      padding-left: 16px;
+    }
+
+    .stat:nth-child(2n) { border-right: none; }
+    .stat:nth-child(n+3) { border-top: 1px solid var(--border); }
+
+    .stat-num { font-size: 32px; }
+
+    .stat-label { font-size: 9px; }
+
+    /* SECTIONS */
+    section { padding: 48px 16px; }
+
+    .section-label { font-size: 9px; }
+
+    h2 { font-size: clamp(28px, 7vw, 40px); }
+
+    /* SERVICES GRID */
+    .service-card {
+      padding: 24px;
+    }
+
+    .service-icon { font-size: 10px; }
+
+    .service-card h3 { font-size: 20px; }
+
+    .service-card p { font-size: 13px; }
+
+    /* SKILLS */
+    .lang-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+
+    .lang-tag { font-size: 10px; padding: 8px 10px; }
+
+    /* WORK ITEMS */
+    .work-item {
+      padding: 20px 16px;
+      gap: 4px;
+    }
+
+    .work-title { font-size: 14px; }
+
+    .work-title span { font-size: 11px; }
+
+    .work-saved { font-size: 20px; }
+
+    .work-tag { font-size: 9px; padding: 4px 8px; }
+
+    /* PROCESS */
+    .process-steps { gap: 24px; }
+
+    .step-num { width: 44px; height: 44px; font-size: 12px; }
+
+    .process-step h4 { font-size: 16px; }
+
+    .process-step p { font-size: 12px; padding: 0 8px; }
+
+    /* CONTACT FORM */
+    .contact-detail {
+      padding: 12px 0;
+      gap: 12px;
+    }
+
+    .contact-detail-label { font-size: 9px; min-width: 70px; }
+
+    .contact-detail-val { font-size: 13px; }
+
+    .form-group { gap: 6px; }
+
+    .form-group label { font-size: 9px; }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      font-size: 14px;
+      padding: 12px 12px;
+    }
+
+    .form-submit {
+      font-size: 11px;
+      padding: 14px 20px;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 24px 16px;
+      flex-direction: column;
+      text-align: center;
+      gap: 16px;
+    }
+
+    footer p { font-size: 10px; }
+
+    /* DIVIDER */
+    .divider { margin: 0 16px; }
+  }
+
+  /* ── EXTRA SMALL MOBILE ── */
+  @media (max-width: 480px) {
+    nav { padding: 12px 12px; }
+
+    .nav-logo { font-size: 11px; }
+
+    .nav-links { gap: 12px; }
+
+    .nav-cta { padding: 6px 16px; font-size: 10px; }
+
+    .hero {
+      padding: 60px 12px 30px;
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 8vw, 52px);
+    }
+
+    .hero-label {
+      font-size: 9px;
+      margin-bottom: 12px;
+    }
+
+    .hero-sub {
+      font-size: 12px;
+      margin-top: 16px;
+    }
+
+    .hero-actions {
+      margin-top: 24px;
+    }
+
+    .stats-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .stat {
+      padding: 16px 12px;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stat:last-child { border-bottom: none; }
+
+    .stat-num { font-size: 28px; }
+
+    section { padding: 36px 12px; }
+
+    h2 { font-size: clamp(24px, 6vw, 32px); }
+
+    .service-card { padding: 20px 12px; }
+
+    .lang-grid { grid-template-columns: 1fr; }
+
+    .work-item { padding: 16px 12px; }
+
+    .work-title { font-size: 13px; }
+
+    .divider { margin: 0 12px; }
+
+    footer { padding: 16px 12px; }
   }
 </style>
 </head>
@@ -700,7 +998,12 @@
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">ACC<span>×</span>TECH</a>
-  <div class="nav-links">
+  <button class="hamburger-btn" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="nav-links" id="nav-menu">
     <a href="index.html">Home</a>
     <a href="#services">Services</a>
     <a href="#work">Work</a>
@@ -1036,6 +1339,24 @@
 </footer>
 
 <script>
+  // Hamburger menu toggle
+  const hamburger = document.getElementById('hamburger');
+  const navMenu = document.getElementById('nav-menu');
+  
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('active');
+  });
+
+  // Close menu when a link is clicked
+  const navLinks = navMenu.querySelectorAll('a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      navMenu.classList.remove('active');
+    });
+  });
+
   // Reveal on scroll
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
